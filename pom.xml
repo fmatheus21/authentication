@@ -13,7 +13,7 @@
     <groupId>com.fmatheus</groupId>
     <artifactId>authentication</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
+    <name>authentication</name>
     <description>Autenticação OAuth2 e JWT</description>
 
     <properties>
