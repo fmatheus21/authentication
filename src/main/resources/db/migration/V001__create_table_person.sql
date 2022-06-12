@@ -1,0 +1,11 @@
+CREATE TABLE person (
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(70) NOT NULL,
+  email varchar(100) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY id_UNIQUE (id),
+  UNIQUE KEY email_UNIQUE (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO person
+(id, name, email) VALUES (1, 'FERNANDO MATHEUS', 'FERNANDO.MATHEUSS@HOTMAIL.COM');
