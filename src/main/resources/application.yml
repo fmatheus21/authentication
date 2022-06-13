@@ -8,8 +8,8 @@ security:
   config:
     allow-origin: ${ALLOW_ORIGIN:http://localhost:4200}
     with-client: ${CONFIG_WITH_CLIENT:angular}
-    secret-client: ${CONFIG_SECRET_CLIENT}
-    jwt-signing-key: ${JWT_SIGNING_KEY}
+    secret-client: ${CONFIG_SECRET_CLIENT:angular123456@}
+    jwt-signing-key: ${JWT_SIGNING_KEY:angular123456@}
     secure-https: ${SECURE_HTTPS:false}
     context-path-token: ${CONTEXT_PATH_TOKEN:/oauth/token}
     token-validity-seconds: ${TOKEN_VALIDITY_SECONDS:43200}

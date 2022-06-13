@@ -1,8 +1,9 @@
 package com.fmatheus.app.model.repository.impl;
 
 import com.fmatheus.app.controller.enumerable.EntityEnum;
-import com.fmatheus.app.model.entity.PersonEntity;
-import com.fmatheus.app.model.entity.UserEntity;
+import com.fmatheus.app.controller.util.AppUtil;
+import com.fmatheus.app.model.entity.Person;
+import com.fmatheus.app.model.entity.User;
 import com.fmatheus.app.model.repository.filter.RepositoryFilter;
 import com.fmatheus.app.model.repository.query.UserRepositoryQuery;
 import org.springframework.data.domain.Page;
@@ -17,26 +18,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author Fernando Matheus
- */
 public class UserRepositoryImpl implements UserRepositoryQuery {
 
     @PersistenceContext
     private EntityManager manager;
 
     @Override
-    public Page<UserEntity> findAllFilter(Pageable pageable, RepositoryFilter filter) {
+    public Page<User> findAllFilter(Pageable pageable, RepositoryFilter filter) {
         var builder = manager.getCriteriaBuilder();
-        CriteriaQuery<UserEntity> criteriaQuery = builder.createQuery(UserEntity.class);
-        Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
-        Join<PersonEntity, UserEntity> joinPerson = root.join(EntityEnum.ID_PERSON.getValue());
+        CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        Join<Person, User> joinPerson = root.join(EntityEnum.ID_PERSON.getValue());
         Predicate[] predicates = createRestrictions(filter, builder, root);
         criteriaQuery
                 .where(predicates)
                 .orderBy(builder.asc(joinPerson.get(EntityEnum.NAME.getValue())));
 
-        TypedQuery<UserEntity> typedQuery = manager.createQuery(criteriaQuery);
+        TypedQuery<User> typedQuery = manager.createQuery(criteriaQuery);
 
         this.addPageRestrictions(typedQuery, pageable);
 
@@ -54,12 +52,11 @@ public class UserRepositoryImpl implements UserRepositoryQuery {
      * @return Predicate[]
      * @author Fernando Matheus
      */
-    private Predicate[] createRestrictions(RepositoryFilter filter, CriteriaBuilder builder,
-                                           Root<UserEntity> root) {
+    private Predicate[] createRestrictions(RepositoryFilter filter, CriteriaBuilder builder, Root<User> root) {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        Join<PersonEntity, UserEntity> joinPerson = root.join(EntityEnum.ID_PERSON.getValue());
+        Join<Person, User> joinPerson = root.join(EntityEnum.ID_PERSON.getValue());
 
         if (Objects.nonNull(filter.getName())) {
             predicates.add(builder.like(builder.lower(joinPerson.get(EntityEnum.NAME.getValue())),
@@ -68,7 +65,12 @@ public class UserRepositoryImpl implements UserRepositoryQuery {
 
         if (Objects.nonNull(filter.getDocument())) {
             predicates.add(builder.like(builder.lower(joinPerson.get(EntityEnum.DOCUMENT.getValue())),
-                    "%" + filter.getDocument().toLowerCase() + "%"));
+                    "%" + AppUtil.removeSpecialCharacters(filter.getDocument()) + "%"));
+        }
+
+        if (Objects.nonNull(filter.getEmail())) {
+            predicates.add(builder.like(builder.lower(joinPerson.get(EntityEnum.EMAIL.getValue())),
+                    "%" + filter.getEmail().toLowerCase() + "%"));
         }
 
         if (Objects.nonNull(filter.getUsername())) {
@@ -76,7 +78,7 @@ public class UserRepositoryImpl implements UserRepositoryQuery {
                     "%" + filter.getUsername().toLowerCase() + "%"));
         }
 
-        return predicates.toArray(new Predicate[predicates.size()]);
+        return predicates.toArray(new Predicate[0]);
 
     }
 
@@ -88,7 +90,7 @@ public class UserRepositoryImpl implements UserRepositoryQuery {
      * @param pageable   - Pageable
      * @author Fernando Matheus
      */
-    private void addPageRestrictions(TypedQuery<UserEntity> typedQuery, Pageable pageable) {
+    private void addPageRestrictions(TypedQuery<User> typedQuery, Pageable pageable) {
         int currentPage = pageable.getPageNumber();
         int totalRecordsPerPage = pageable.getPageSize();
         int firstPageRecord = currentPage * totalRecordsPerPage;
@@ -108,7 +110,7 @@ public class UserRepositoryImpl implements UserRepositoryQuery {
     private Long total(RepositoryFilter filter) {
         var builder = manager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
-        Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
+        Root<User> root = criteriaQuery.from(User.class);
 
         Predicate[] predicates = createRestrictions(filter, builder, root);
         criteriaQuery.where(predicates);

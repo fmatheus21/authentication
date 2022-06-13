@@ -8,6 +8,6 @@ public class ResourceConstant {
 
     public static final String ID_RESOURCE = "/{\\d+}";
     public static final String ID = "/{id}";
-    public static final String USER = "/users";
+    public static final String USERS = "/users";
 
 }

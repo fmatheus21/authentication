@@ -8,23 +8,8 @@ public enum EntityEnum {
     NAME("name"),
     DOCUMENT("document"),
     EMAIL("email"),
-    PHONE("phone"),
-    ID_PERSON("idPerson"),
-    CONTACT("contactEntity"),
-    ID_CLIENT("idClient"),
-    PLATE("plate"),
-    RENAVAM("renavam"),
-    VEHICLE("vehicleEntity"),
     USERNAME("username"),
-    ID_CONSULTANT("idConsultant"),
-    ID_CONTRACT("idContract"),
-    DATESIGNED("dateSigned"),
-    PLAN("plan"),
-    DATE_SIGNED("dateSigned"),
-    DISTRICT("district"),
-    CONSULTANT("consultant"),
-    CITY("city"),
-    BRAND("brand");
+    ID_PERSON("idPerson"),;
 
 
     @Getter

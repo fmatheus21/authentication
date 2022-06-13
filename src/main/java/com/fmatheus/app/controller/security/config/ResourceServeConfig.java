@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -27,14 +26,11 @@ import java.util.logging.Logger;
 @EnableResourceServer
 public class ResourceServeConfig extends ResourceServerConfigurerAdapter {
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserDetailsService userDetailsService;
-
-    public ResourceServeConfig(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) {
@@ -57,11 +53,11 @@ public class ResourceServeConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 .authorizeRequests()
 
-                .antMatchers(HttpMethod.GET, ResourceConstant.USER).hasAnyAuthority(RoleConstant.LIST_USER)
-                .antMatchers(HttpMethod.GET, ResourceConstant.USER + ResourceConstant.ID_RESOURCE).hasAnyAuthority(RoleConstant.VIEW_USER)
-                .antMatchers(HttpMethod.POST, ResourceConstant.USER).hasAnyAuthority(RoleConstant.CREATE_USER)
-                .antMatchers(HttpMethod.PUT, ResourceConstant.USER + ResourceConstant.ID_RESOURCE).hasAnyAuthority(RoleConstant.UPDATE_USER)
-                .antMatchers(HttpMethod.DELETE, ResourceConstant.USER + ResourceConstant.ID_RESOURCE).hasAnyAuthority(RoleConstant.DELETE_USER)
+                .antMatchers(HttpMethod.GET, ResourceConstant.USERS).hasAnyAuthority(RoleConstant.LIST_USER)
+                .antMatchers(HttpMethod.GET, ResourceConstant.USERS + ResourceConstant.ID_RESOURCE).hasAnyAuthority(RoleConstant.VIEW_USER)
+                .antMatchers(HttpMethod.POST, ResourceConstant.USERS).hasAnyAuthority(RoleConstant.CREATE_USER)
+                .antMatchers(HttpMethod.PUT, ResourceConstant.USERS + ResourceConstant.ID_RESOURCE).hasAnyAuthority(RoleConstant.UPDATE_USER)
+                .antMatchers(HttpMethod.DELETE, ResourceConstant.USERS + ResourceConstant.ID_RESOURCE).hasAnyAuthority(RoleConstant.DELETE_USER)
 
                 .anyRequest().authenticated()
                 .and()
@@ -79,10 +75,6 @@ public class ResourceServeConfig extends ResourceServerConfigurerAdapter {
         return userDetailsService;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public MethodSecurityExpressionHandler createExpressionHandler() {

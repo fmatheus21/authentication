@@ -2,8 +2,11 @@ package com.fmatheus.app.model.service.impl;
 
 import com.fmatheus.app.model.entity.User;
 import com.fmatheus.app.model.repository.UserRepository;
+import com.fmatheus.app.model.repository.filter.RepositoryFilter;
 import com.fmatheus.app.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,5 +41,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByUsername(String username) {
         return this.repository.findByUsername(username);
+    }
+
+    public Page<User> findAllFilter(Pageable pageable, RepositoryFilter filter) {
+        return repository.findAllFilter(pageable, filter);
     }
 }
