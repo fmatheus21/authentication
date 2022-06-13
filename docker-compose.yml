@@ -4,6 +4,7 @@ services:
 
   authentication-db:
     image: mysql:8.0.29
+    container_name: authentication-db
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -23,6 +24,7 @@ services:
 
   authentication:
     image: fmatheus21/authentication
+    container_name: authentication-api
     restart: always
     build:
       context: .
