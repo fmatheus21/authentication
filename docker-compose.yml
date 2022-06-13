@@ -1,0 +1,48 @@
+version: '1.0'
+
+services:
+
+  authentication-db:
+    image: mysql:8.0.29
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: admin123
+      MYSQL_DATABASE: authentication
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_TCP_PORT: 3308
+    ports:
+      - 3308:3308
+    expose:
+      - 3308
+    networks:
+      - fmatheus-network
+
+  authentication:
+    image: fmatheus21/authentication
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      TZ: America/Sao_Paulo
+      SPRING.APPLICATION.NAME: authentication
+      SPRING.DATASOURCE.URL: jdbc:mysql://authentication-db:3308/authentication?useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
+      SPRING.DATASOURCE.USERNAME: docker
+      SPRING.DATASOURCE.PASSWORD: admin123
+      SPRING.FLYWAY.URL: jdbc:mysql://authentication-db:3308/authentication?useSSL=false&useTimezone=true&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
+      SPRING.FLYWAY.USER: docker
+      SPRING.FLYWAY.PASSWORD: admin123
+    ports:
+      - 8000:8000
+    depends_on:
+      - authentication-db
+    networks:
+      - fmatheus-network
+
+networks:
+  fmatheus-network:
+    driver: bridge
