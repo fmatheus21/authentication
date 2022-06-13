@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CustomTokenEnhancer implements TokenEnhancer {
 
@@ -23,7 +22,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 
         var user = (UserSecurity) authentication.getPrincipal();
 
-        var roles = user.getUser().getRoleCollection().stream().map(map -> map.getRole().toUpperCase()).collect(Collectors.toList());
+        var roles = user.getUser().getRoleCollection().stream().map(map -> map.getRole().toUpperCase()).toList();
 
         Map<String, Object> info = new HashMap<>();
         info.put("name", AppUtil.convertFirstUppercaseCharacter(user.getUser().getIdPerson().getName()));
