@@ -46,6 +46,6 @@ jobs:
       
       - name: Push Docker Hub Container Registry
         run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/autentication:latest ${{ secrets.DOCKER_USERNAME }}/autenticationr:${{ github.run_id }}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/autentication:latest ${{ secrets.DOCKER_USERNAME }}/autentication:${{ github.run_id }}
           docker push ${{ secrets.DOCKER_USERNAME }}/autentication:${{ github.run_id }}
           docker push ${{ secrets.DOCKER_USERNAME }}/autentication:latest
