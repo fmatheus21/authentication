@@ -22,7 +22,10 @@ public enum MessagesEnum {
     ERROR_USER_NOTFOUND(HttpStatus.BAD_REQUEST, "message.error.user-notfound"),
     ERROR_USER_INACTIVE(HttpStatus.BAD_REQUEST, "message.error.user-inactive"),
     ERROR_NOT_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "message.error.unauthorized"),
-    ERROR_RECORD_EXIST(HttpStatus.BAD_REQUEST, "message.error.record-exist");
+    ERROR_RECORD_EXIST(HttpStatus.BAD_REQUEST, "message.error.record-exist"),
+    ERROR_USERNAME_EXIST(HttpStatus.BAD_REQUEST, "message.error.username-exist"),
+    ERROR_PHONE_EXIST(HttpStatus.BAD_REQUEST, "message.error.phone-exist"),
+    ERROR_EMAIL_EXIST(HttpStatus.BAD_REQUEST, "message.error.email-exist");
 
 
     @Getter

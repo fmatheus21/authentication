@@ -6,6 +6,7 @@ import com.fmatheus.app.controller.dto.response.PersonDtoResponse;
 import com.fmatheus.app.controller.enumerable.PersonTypeEnum;
 import com.fmatheus.app.controller.util.AppUtil;
 import com.fmatheus.app.model.entity.Person;
+import com.fmatheus.app.model.entity.PersonType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,8 +19,12 @@ public class PersonConverterImpl implements PersonConverter {
 
 
     @Override
-    public Person converterToRequest(PersonDtoRequest personDtoRequest) {
-        return null;
+    public Person converterToRequest(PersonDtoRequest request) {
+        return Person.builder()
+                .name(AppUtil.removeDuplicateSpace(AppUtil.convertAllUppercaseCharacters(request.getName())))
+                .document(AppUtil.removeSpecialCharacters(request.getDocument()))
+                .personType(PersonType.builder().id(request.getPersonType()).build())
+                .build();
     }
 
     @Override

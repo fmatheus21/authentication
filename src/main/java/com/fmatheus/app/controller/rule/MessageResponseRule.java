@@ -37,6 +37,18 @@ public class MessageResponseRule {
         return new BadRequestException(messagesEnum);
     }
 
+    public BadRequestException badRequestErrorUsernameExist() {
+        return new BadRequestException(MessagesEnum.ERROR_USERNAME_EXIST);
+    }
+
+    public BadRequestException badRequestErrorPhoneExist() {
+        return new BadRequestException(MessagesEnum.ERROR_PHONE_EXIST);
+    }
+
+    public BadRequestException badRequestErrorEmailExist() {
+        return new BadRequestException(MessagesEnum.ERROR_EMAIL_EXIST);
+    }
+
     public BadRequestException errorRecordExist() {
         return new BadRequestException(MessagesEnum.ERROR_RECORD_EXIST);
     }

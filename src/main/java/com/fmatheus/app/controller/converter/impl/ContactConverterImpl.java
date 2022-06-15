@@ -18,8 +18,10 @@ public class ContactConverterImpl implements ContactConverter {
 
 
     @Override
-    public Contact converterToRequest(ContactDtoRequest contactDtoRequest) {
-        return null;
+    public Contact converterToRequest(ContactDtoRequest request) {
+        request.setPhone(AppUtil.removeSpecialCharacters(request.getPhone()));
+        request.setEmail(AppUtil.convertAllUppercaseCharacters(request.getEmail()));
+        return this.modelMapper.map(request, Contact.class);
     }
 
     @Override

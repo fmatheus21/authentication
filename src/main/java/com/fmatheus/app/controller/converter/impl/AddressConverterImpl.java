@@ -20,8 +20,14 @@ public class AddressConverterImpl implements AddressConverter {
 
 
     @Override
-    public Address converterToRequest(AddressDtoRequest addressDtoRequest) {
-        return null;
+    public Address converterToRequest(AddressDtoRequest request) {
+        request.setPlace(AppUtil.removeDuplicateSpace(AppUtil.convertAllUppercaseCharacters(request.getPlace())));
+        request.setComplement(Objects.nonNull(request.getComplement()) ? AppUtil.removeDuplicateSpace(AppUtil.convertAllUppercaseCharacters(request.getComplement())) : null);
+        request.setDistrict(AppUtil.removeDuplicateSpace(AppUtil.convertAllUppercaseCharacters(request.getDistrict())));
+        request.setCity(AppUtil.removeDuplicateSpace(AppUtil.convertAllUppercaseCharacters(request.getCity())));
+        request.setState(AppUtil.convertAllUppercaseCharacters(request.getState()));
+        request.setZipCode(AppUtil.removeSpecialCharacters(request.getZipCode()));
+        return this.modelMapper.map(request, Address.class);
     }
 
     @Override

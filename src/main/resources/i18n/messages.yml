@@ -1,5 +1,8 @@
 message:
   error:
+    email-exist: O email já existe.
+    phone-exist: O número de telefone já existe.
+    username-exist: Nome de usuário já existe.
     user-inactive: Usuário inativo. Contacte o administrador.
     user-notfound: Usuário não encontrado.
     internal-server: Houve um erro inesperado. Tente novamente. Caso o problema persista, entre em contato com o administrador.
