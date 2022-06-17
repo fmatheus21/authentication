@@ -6,6 +6,7 @@ import com.fmatheus.app.controller.enumerable.MessagesEnum;
 import com.fmatheus.app.controller.exception.BadRequestException;
 import com.fmatheus.app.model.entity.*;
 import com.fmatheus.app.model.repository.UserRepository;
+import com.fmatheus.app.model.repository.filter.RepositoryFilter;
 import com.fmatheus.app.model.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,10 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class UserRuleTest {
 
+
     private final int id = 1;
 
     private User user;
 
+    @Mock
+    private MessageResponseRule messageResponseRule;
 
     @Mock
     private UserService userService;
@@ -47,9 +56,21 @@ class UserRuleTest {
     @Mock
     private UserDtoResponse userDtoResponse;
 
+    private Pageable pageable;
+
+    private RepositoryFilter filter;
+
+    private Page<UserDtoResponse> pageUserDtoResponse;
+
 
     @BeforeEach
     void setUp() {
+
+        this.pageable = PageRequest.of(0, 1);
+
+        filter = RepositoryFilter.builder()
+                .name("Fernando")
+                .build();
 
         var person = Person.builder()
                 .id(1)
@@ -89,10 +110,19 @@ class UserRuleTest {
 
         this.userDtoResponse = this.userConverter.converterToResponse(this.user);
 
+        this.pageUserDtoResponse = this.collectionUsersPageable().map(map -> this.userConverter.converterToResponse(map));
+
+
     }
 
     @Test
     void findAll() {
+        PageRequest pageRequest = PageRequest.of(1, this.collectionUsersPageable().getSize());
+        Mockito.when(this.userRepository.findAllFilter(this.pageable, this.filter)).thenReturn(this.collectionUsersPageable());
+        Mockito.when(this.userService.findAllFilter(this.pageable, this.filter)).thenReturn(this.collectionUsersPageable());
+        Mockito.when(this.collectionUsersPageable().map(map -> this.userConverter.converterToResponse(map))).thenReturn(this.pageUserDtoResponse);
+        var usersResponse = this.userRule.findAll(pageRequest, this.filter);
+        assertTrue(Objects.nonNull(usersResponse));
     }
 
     @Test
@@ -106,6 +136,10 @@ class UserRuleTest {
 
     @Test
     void create() {
+    }
+
+    private Page<User> collectionUsersPageable() {
+        return new PageImpl<>(Collections.singletonList(this.user), pageable, 1L);
     }
 
     private Throwable badRequestException() {
