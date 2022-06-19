@@ -11,6 +11,8 @@ public interface UserService extends GenericService<User, Integer> {
 
     Optional<User> findByUsername(String username);
 
+    boolean checkUsernameExist(String username);
+
     Page<User> findAllFilter(Pageable pageable, RepositoryFilter filter);
 
 }

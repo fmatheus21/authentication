@@ -35,14 +35,15 @@ public class ContactServiceImpl implements ContactService {
         this.repository.delete(user);
     }
 
+    @Override
+    public boolean checkPhoneExist(String phone) {
+        return repository.findByPhone(phone);
+    }
 
     @Override
-    public Optional<Contact> findByEmail(String email) {
+    public boolean checkEmailExist(String email) {
         return repository.findByEmail(email);
     }
 
-    @Override
-    public Optional<Contact> findByPhone(String phone) {
-        return repository.findByPhone(phone);
-    }
+
 }

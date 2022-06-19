@@ -79,26 +79,24 @@ public class UserRule {
      */
     public ResponseEntity<MessageResponse> create(UserDtoRequest request, HttpServletResponse response) {
 
-        var user = this.userService.findByUsername(AppUtil.removeAllSpaces(request.getUsername())).orElse(null);
-        if (Objects.nonNull(user)) {
+        if (this.userService.checkUsernameExist(AppUtil.removeAllSpaces(request.getUsername()))) {
             throw this.messageResponseRule.badRequestErrorUsernameExist();
         }
 
-        var phone = this.contactService.findByPhone(AppUtil.removeSpecialCharacters(request.getContact().getPhone())).orElse(null);
-        if (Objects.nonNull(phone)) {
+
+        if (this.contactService.checkPhoneExist(AppUtil.removeSpecialCharacters(request.getContact().getPhone()))) {
             throw this.messageResponseRule.badRequestErrorPhoneExist();
         }
 
-        var email = this.contactService.findByEmail(request.getContact().getEmail()).orElse(null);
-        if (Objects.nonNull(email)) {
+        if (this.contactService.checkEmailExist(request.getContact().getEmail())) {
             throw this.messageResponseRule.badRequestErrorEmailExist();
         }
 
         var person = this.userConverter.converterToSave(request);
 
-        this.personService.save(person);
+        var commit = this.personService.save(person);
 
-        this.publisher.publishEvent(new ResourceEvent(this, response, person.getId()));
+        this.publisher.publishEvent(new ResourceEvent(this, response, commit.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(this.messageResponseRule.messageSuccessCreate());
 
     }

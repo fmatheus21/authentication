@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -41,6 +42,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByUsername(String username) {
         return this.repository.findByUsername(username);
+    }
+
+    @Override
+    public boolean checkUsernameExist(String username) {
+        return Objects.nonNull(this.repository.findByUsername(username));
     }
 
     public Page<User> findAllFilter(Pageable pageable, RepositoryFilter filter) {
