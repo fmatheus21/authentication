@@ -23,6 +23,12 @@ server:
   port: ${SERVER_PORT:8083}
 
 spring:
+  messages:
+    encoding: utf-8
+    basename: i18n.message
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
   data:
     web:
       pageable:
