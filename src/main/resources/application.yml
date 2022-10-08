@@ -43,18 +43,18 @@ spring:
     name: authentication
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/authentication?useTimezone=true&serverTimezone=UTC}
-    username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD:210683}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/authentication?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
   flyway:
-    url: jdbc:mysql://localhost:3306/authentication?useTimezone=true&serverTimezone=UTC
-    user: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD:210683}
+    url: jdbc:mysql://localhost:3306/authentication?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC
+    user: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
 
 springdoc:
   swagger-ui:

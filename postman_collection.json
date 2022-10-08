@@ -1,0 +1,256 @@
+{
+	"info": {
+		"_postman_id": "21d08c72-9940-4346-9069-fb68a279fa68",
+		"name": "Authentication oAuth2 JWT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7310810"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Access Token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "angular123456@",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "angular",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client",
+									"value": "angular",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "fmatheus",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_URL}}/oauth/token",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "angular210683@",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "angular",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJmbWF0aGV1cyIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJhdGkiOiI3MTAyZDgxNi01NGNhLTQwMDctYmY0Ny04MzExMGMxMmNiNDkiLCJleHAiOjE2MDU5NDY5ODYsImF1dGhvcml0aWVzIjpbIkFETUlOIl0sImp0aSI6ImNiZGRmZTI3LWE5MDYtNDViYy04OTFhLTFmMTQ3OTg2ODBkNyIsImNsaWVudF9pZCI6ImFuZ3VsYXIifQ.u1hI1MKS_L4wBMKbV1Jrf_QDW37FMQrVXI71y7kmLkw",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8083/api/oauth/token",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFnZSI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4My9hcGkvdXBsb2FkL2ltYWdlL2F2YXRhci9hdmF0YXIucG5nIiwidXNlcl9uYW1lIjoiRk1BVEhFVVMiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwibmFtZSI6IkZFUk5BTkRPIEJSQUdBIE1BVEhFVVMiLCJleHAiOjE2MTA0NjQ2MTQsImF1dGhvcml0aWVzIjpbIkFETUlOIl0sImp0aSI6IjA3ZmYzMDNiLTgzMDktNGU4MS1iMDJmLTg0MzI2NGZmZTU2MiIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJ1c2VybmFtZSI6IkZNQVRIRVVTIn0.cDneZyvjyfXs5H7M0EN4lCOQqLdvIUKbi2NygJ-ZDPc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8083/api/tokens/revoke",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"tokens",
+								"revoke"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/users?page=0&size=5",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/users/12",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Tiago\",\r\n    \"person\": {\r\n        \"name\": \"Tiago Fábio Matheus Drumond\",\r\n        \"document\": \"912.915.197-00\",\r\n        \"personType\": 1\r\n    },\r\n    \"contact\": {\r\n        \"phone\": \"(27) 99630-6407\",\r\n        \"email\": \"tiago_fabio_drumond@rebecacometerra.com.br\"\r\n    },\r\n    \"address\": {\r\n        \"place\": \"Rua Guanabara\",\r\n        \"number\": \"973\",\r\n        \"complement\": \"Apt 304\",\r\n        \"district\": \"Itapuã\",\r\n        \"city\": \"Vila Velha\",\r\n        \"state\": \"ES\",\r\n        \"zipCode\": \"29101-594\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/users",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

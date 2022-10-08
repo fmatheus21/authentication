@@ -4,7 +4,7 @@ package com.fmatheus.app.controller.constant;
 public class PropertiesConstant {
 
     private PropertiesConstant() {
-        throw new IllegalStateException("ValuePropertiesConstant class");
+        throw new IllegalStateException("PropertiesConstant class");
     }
 
     public static final String ALLOW_ORIGIN = "${security.config.allow-origin}";
