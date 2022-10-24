@@ -2,6 +2,7 @@ package com.fmatheus.app.model.repository.impl;
 
 import com.fmatheus.app.controller.enumerable.EntityEnum;
 import com.fmatheus.app.controller.util.AppUtil;
+import com.fmatheus.app.model.entity.Contact;
 import com.fmatheus.app.model.entity.Person;
 import com.fmatheus.app.model.entity.User;
 import com.fmatheus.app.model.repository.filter.RepositoryFilter;
@@ -57,6 +58,7 @@ public class UserRepositoryImpl implements UserRepositoryQuery {
         List<Predicate> predicates = new ArrayList<>();
 
         Join<Person, User> joinPerson = root.join(EntityEnum.ID_PERSON.getValue());
+        Join<Contact, Person> joinContact = joinPerson.join(EntityEnum.CONTACT.getValue());
 
         if (Objects.nonNull(filter.getName())) {
             predicates.add(builder.like(builder.lower(joinPerson.get(EntityEnum.NAME.getValue())),
@@ -69,7 +71,7 @@ public class UserRepositoryImpl implements UserRepositoryQuery {
         }
 
         if (Objects.nonNull(filter.getEmail())) {
-            predicates.add(builder.like(builder.lower(joinPerson.get(EntityEnum.EMAIL.getValue())),
+            predicates.add(builder.like(builder.lower(joinContact.get(EntityEnum.EMAIL.getValue())),
                     "%" + filter.getEmail().toLowerCase() + "%"));
         }
 

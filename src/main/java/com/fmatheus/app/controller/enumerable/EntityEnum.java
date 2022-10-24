@@ -9,7 +9,8 @@ public enum EntityEnum {
     DOCUMENT("document"),
     EMAIL("email"),
     USERNAME("username"),
-    ID_PERSON("idPerson"),;
+    ID_PERSON("idPerson"),
+    CONTACT("contact");
 
 
     @Getter
