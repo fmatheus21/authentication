@@ -19,7 +19,7 @@ server:
   servlet:
     encoding:
       charset: UTF-8
-    context-path: ${CONTEXT_PATH:/authentication/api/v1}
+    context-path: ${CONTEXT_PATH:/auth/api/v1}
   port: ${SERVER_PORT:8083}
 
 spring:
@@ -43,7 +43,7 @@ spring:
     name: authentication
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/authentication?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/auth?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
@@ -52,12 +52,12 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
   flyway:
-    url: jdbc:mysql://localhost:3306/authentication?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/auth?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC
     user: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
 
 springdoc:
   swagger-ui:
-    path: /authentication/api/v1/swagger-ui.html
+    path: /auth/api/v1/swagger-ui.html
   api-docs:
-    path: authentication/v3/api-docs
+    path: auth/v3/api-docs

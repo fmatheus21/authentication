@@ -27,9 +27,6 @@ public class Role implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "method", nullable = false, length = 10)
-    private String method;
-
     @Column(name = "role", nullable = false, length = 100)
     private String role;
 
@@ -40,7 +37,11 @@ public class Role implements Serializable {
     @JoinTable(name = "user_role_join", joinColumns = {@JoinColumn(name = "id_role", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false)})
     @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<User> userCollection;
+    private Collection<User> users;
+
+    @JoinColumn(name = "id_application", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Application application;
 
 
 }
