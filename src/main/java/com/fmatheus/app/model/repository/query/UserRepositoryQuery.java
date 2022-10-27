@@ -9,4 +9,6 @@ public interface UserRepositoryQuery {
 
     Page<User> findAllFilter(Pageable pageable, RepositoryFilter filter);
 
+    Long total(RepositoryFilter filter);
+
 }

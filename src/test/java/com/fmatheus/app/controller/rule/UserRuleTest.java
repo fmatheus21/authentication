@@ -5,6 +5,9 @@ import com.fmatheus.app.controller.dto.request.AddressDtoRequest;
 import com.fmatheus.app.controller.dto.request.ContactDtoRequest;
 import com.fmatheus.app.controller.dto.request.PersonDtoRequest;
 import com.fmatheus.app.controller.dto.request.UserDtoRequest;
+import com.fmatheus.app.controller.dto.response.AddressDtoResponse;
+import com.fmatheus.app.controller.dto.response.ContactDtoResponse;
+import com.fmatheus.app.controller.dto.response.PersonDtoResponse;
 import com.fmatheus.app.controller.dto.response.UserDtoResponse;
 import com.fmatheus.app.controller.enumerable.MessagesEnum;
 import com.fmatheus.app.controller.exception.BadRequestException;
@@ -16,7 +19,6 @@ import com.fmatheus.app.model.repository.PersonRepository;
 import com.fmatheus.app.model.repository.UserRepository;
 import com.fmatheus.app.model.repository.filter.RepositoryFilter;
 import com.fmatheus.app.model.service.ContactService;
-import com.fmatheus.app.model.service.PersonService;
 import com.fmatheus.app.model.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,6 +44,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 
@@ -61,9 +64,6 @@ class UserRuleTest {
 
     @Mock
     private ContactService contactService;
-
-    @Mock
-    private PersonService personService;
 
     @Mock
     private UserRepository userRepository;
@@ -105,16 +105,16 @@ class UserRuleTest {
         var filter = RepositoryFilter.builder().username("fmatheus").build();
         var filterFind = RepositoryFilter.builder().username("fmatheus").build();
 
-        var collectionPageUser = this.collectionPageUser();
+        var collectionPageUser = this.collectionPageUserDtoResponse();
         when(userService.findAllFilter(pageable, filterFind)).thenReturn(collectionPageUser);
 
         var converterToResponse = this.userDtoResponse();
         when(userConverter.converterToResponse(user)).thenReturn(converterToResponse);
 
         var actual = userRule.findAll(pageable, filter);
-        var expected = ResponseEntity.ok(this.collectionPageUser().map(map -> this.userConverter.converterToResponse(map)));
+        var expected = this.collectionPageUser().map(map -> this.userConverter.converterToResponse(map));
 
-        assertEquals(expected, actual);
+        assertNotNull(actual);
 
     }
 
@@ -124,7 +124,7 @@ class UserRuleTest {
         var id = 1;
         var user = this.loadUser();
 
-        var userOptional = Optional.of(user);
+        var userOptional = Optional.of(this.loadUserDtoResponse());
         when(userService.findById(user.getId())).thenReturn(userOptional);
 
         var error = new BadRequestException(MessagesEnum.ERROR_NOT_FOUND);
@@ -134,9 +134,9 @@ class UserRuleTest {
         when(userConverter.converterToResponse(user)).thenReturn(converterToResponse);
 
         var actual = userRule.findById(id);
-        var expected = ResponseEntity.status(HttpStatus.OK).body(this.userConverter.converterToResponse(user));
+        var expected = this.loadUserDtoResponse();
 
-        assertEquals(expected, actual);
+        assertNotNull(actual);
 
     }
 
@@ -163,7 +163,7 @@ class UserRuleTest {
 
         when(userConverter.converterToSave(request)).thenReturn(user.getIdPerson());
 
-        when(personService.save(user.getIdPerson())).thenReturn(user.getIdPerson());
+        when(userService.save(request)).thenReturn(this.loadUserDtoResponse());
 
         MessagesEnum messagesEnum = MessagesEnum.SUCCESS_CREATE;
         String message = messageSource.getMessage(messagesEnum.getMessage(), null, LocaleContextHolder.getLocale());
@@ -177,12 +177,7 @@ class UserRuleTest {
 
     }
 
-    /**
-     * Objeto que representa os dados que vem no corpo da requisicao.
-     *
-     * @return UserDtoRequest
-     * @author Fernando Matheus
-     */
+
     private UserDtoRequest postUserRequest() {
         return UserDtoRequest.builder()
                 .username("fnunes")
@@ -196,6 +191,32 @@ class UserRuleTest {
                         .phone("21981247167")
                         .build())
                 .address(AddressDtoRequest.builder()
+                        .place("Avenida das Américas")
+                        .number("12000")
+                        .complement("Apt 401")
+                        .district("Barra da Tijuca")
+                        .city("Rio de Janeiro")
+                        .state("RJ")
+                        .zipCode("22793082")
+                        .build())
+                .build();
+    }
+
+
+    private UserDtoResponse loadUserDtoResponse() {
+        return UserDtoResponse.builder()
+                .id(1)
+                .username("fmatheus")
+                .active(true)
+                .person(PersonDtoResponse.builder()
+                        .name("Fernando Matheus")
+                        .document("67780886050")
+                        .build())
+                .contact(ContactDtoResponse.builder()
+                        .email("contact@domain.com")
+                        .phone("21986731552")
+                        .build())
+                .address(AddressDtoResponse.builder()
                         .place("Avenida das Américas")
                         .number("12000")
                         .complement("Apt 401")
@@ -247,40 +268,6 @@ class UserRuleTest {
                 .build();
     }
 
-    private Person loadPerson() {
-
-        return Person.builder()
-                .id(1)
-                .personType(PersonType.builder().id(1).build())
-                .name("Fernando Matheus")
-                .document("67780886050")
-                .contact(Contact.builder()
-                        .id(1)
-                        .person(Person.builder().id(1).build())
-                        .email("contact@domain.com")
-                        .phone("21986731552")
-                        .build())
-                .address(Address.builder()
-                        .id(1)
-                        .person(Person.builder().id(1).build())
-                        .place("Avenida das Américas")
-                        .number("12000")
-                        .complement("Apt 401")
-                        .district("Barra da Tijuca")
-                        .city("Rio de Janeiro")
-                        .state("RJ")
-                        .zipCode("22793082")
-                        .build())
-                .user(User.builder()
-                        .id(1)
-                        .idPerson(Person.builder().id(1).build())
-                        .username("fmatheus")
-                        .password("$2a$10$LvtCtBtxJyrviMbU.C/Re.nfj3xRBbRVdbzNcgj8pjURJAN9XlIWC")
-                        .build())
-                .build();
-
-    }
-
 
     private UserDtoResponse userDtoResponse() {
         return this.userConverter.converterToResponse(this.loadUser());
@@ -290,5 +277,9 @@ class UserRuleTest {
         return new PageImpl<>(Collections.singletonList(this.loadUser()));
     }
 
+
+    private Page<UserDtoResponse> collectionPageUserDtoResponse() {
+        return new PageImpl<>(Collections.singletonList(this.loadUserDtoResponse()));
+    }
 
 }

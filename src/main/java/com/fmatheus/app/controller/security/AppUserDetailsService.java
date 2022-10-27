@@ -1,9 +1,8 @@
 package com.fmatheus.app.controller.security;
 
 import com.fmatheus.app.controller.rule.MessageResponseRule;
-import com.fmatheus.app.controller.util.AppUtil;
 import com.fmatheus.app.model.entity.User;
-import com.fmatheus.app.model.service.UserService;
+import com.fmatheus.app.model.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.fmatheus.app.controller.util.AppUtil.removeSpecialCharacters;
+
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
@@ -28,14 +29,14 @@ public class AppUserDetailsService implements UserDetailsService {
     private MessageResponseRule messageResponseRule;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         logger.info("Username: {}", username);
-        var user = this.userService.findByUsername(AppUtil.removeAllSpaces(username)).orElseThrow(this.messageResponseRule::usernameNotFoundException);
+        var user = this.userRepository.findByUsername(removeSpecialCharacters(username)).orElseThrow(this.messageResponseRule::usernameNotFoundException);
 
         if (!user.isActive()) {
             logger.error("Usuario inativo: {}", username);

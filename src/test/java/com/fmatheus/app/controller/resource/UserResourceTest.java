@@ -8,11 +8,13 @@ import com.fmatheus.app.controller.dto.request.AddressDtoRequest;
 import com.fmatheus.app.controller.dto.request.ContactDtoRequest;
 import com.fmatheus.app.controller.dto.request.PersonDtoRequest;
 import com.fmatheus.app.controller.dto.request.UserDtoRequest;
+import com.fmatheus.app.controller.dto.response.AddressDtoResponse;
+import com.fmatheus.app.controller.dto.response.ContactDtoResponse;
+import com.fmatheus.app.controller.dto.response.PersonDtoResponse;
+import com.fmatheus.app.controller.dto.response.UserDtoResponse;
 import com.fmatheus.app.controller.rule.MessageResponseRule;
 import com.fmatheus.app.controller.rule.UserRule;
-import com.fmatheus.app.model.entity.*;
 import com.fmatheus.app.model.repository.filter.RepositoryFilter;
-import com.fmatheus.app.model.service.PersonService;
 import com.fmatheus.app.model.service.UserService;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,9 +76,6 @@ class UserResourceTest {
     private UserService userService;
 
     @MockBean
-    private PersonService personService;
-
-    @MockBean
     private ModelMapper modelMapper;
 
     @MockBean
@@ -100,7 +99,7 @@ class UserResourceTest {
     @SneakyThrows
     @Test
     void list() {
-        var page = this.collectionUsersPageable();
+        var page = this.collectionPageUserDtoResponse();
         var pageRequest = PageRequest.of(1, page.getSize());
         var filter = RepositoryFilter.builder().name("fegvfggdsgr").build();
 
@@ -121,7 +120,7 @@ class UserResourceTest {
     @Test
     void findById() {
 
-        when(this.userService.findById(1)).thenReturn(this.loadOptionalUser());
+        when(this.userService.findById(1)).thenReturn(Optional.of(this.loadUserDtoResponse()));
 
         MvcResult mvcResult = this.mockMvc.perform(get(URL_REQUEST + 10)
                         .with(SecurityMockMvcRequestPostProcessors.user(USER).roles(RoleConstant.VIEW_USER))
@@ -140,16 +139,15 @@ class UserResourceTest {
     @Test
     void create() {
 
-        var person = this.loadUser().getIdPerson();
-        var request = this.postUserRequest();
+        var person = this.postUserRequest();
 
-        when(this.personService.save(person)).thenReturn(person);
+        when(this.userService.save(person)).thenReturn(this.loadUserDtoResponse());
 
         MvcResult mvcResult = this.mockMvc.perform(post(URL_REQUEST)
                         .with(SecurityMockMvcRequestPostProcessors.user(RoleConstant.CREATE_USER))
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(this.mapper.writeValueAsString(request)))
+                        .content(this.mapper.writeValueAsString(person)))
                 .andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
@@ -158,45 +156,6 @@ class UserResourceTest {
         assertEquals(this.createSuccess().getStatusCode().value(), mvcResult.getResponse().getStatus());
     }
 
-
-    private User loadUser() {
-
-        var person = Person.builder()
-                .id(1)
-                .personType(PersonType.builder().id(1).build())
-                .name("Fernando Matheus")
-                .document("67780886050")
-                .build();
-
-        var contact = Contact.builder()
-                .id(1)
-                .person(person)
-                .email("contact@domain.com")
-                .phone("21986731552")
-                .build();
-
-        var address = Address.builder()
-                .id(1)
-                .person(person)
-                .place("Avenida das Américas")
-                .number("12000")
-                .complement("Apt 401")
-                .district("Barra da Tijuca")
-                .city("Rio de Janeiro")
-                .state("RJ")
-                .zipCode("22793082")
-                .build();
-
-        person.setContact(contact);
-        person.setAddress(address);
-
-        return User.builder()
-                .id(1)
-                .idPerson(person)
-                .username("fmatheus")
-                .password("$2a$10$LvtCtBtxJyrviMbU.C/Re.nfj3xRBbRVdbzNcgj8pjURJAN9XlIWC")
-                .build();
-    }
 
     /**
      * Objeto que representa os dados que vem no corpo da requisicao.
@@ -228,12 +187,34 @@ class UserResourceTest {
                 .build();
     }
 
-    private Optional<User> loadOptionalUser() {
-        return Optional.of(this.loadUser());
+    private UserDtoResponse loadUserDtoResponse() {
+        return UserDtoResponse.builder()
+                .id(1)
+                .username("fmatheus")
+                .active(true)
+                .person(PersonDtoResponse.builder()
+                        .name("Fernando Matheus")
+                        .document("67780886050")
+                        .build())
+                .contact(ContactDtoResponse.builder()
+                        .email("contact@domain.com")
+                        .phone("21986731552")
+                        .build())
+                .address(AddressDtoResponse.builder()
+                        .place("Avenida das Américas")
+                        .number("12000")
+                        .complement("Apt 401")
+                        .district("Barra da Tijuca")
+                        .city("Rio de Janeiro")
+                        .state("RJ")
+                        .zipCode("22793082")
+                        .build())
+                .build();
     }
 
-    private Page<User> collectionUsersPageable() {
-        return new PageImpl<>(Collections.singletonList(this.loadUser()));
+
+    private Page<UserDtoResponse> collectionPageUserDtoResponse() {
+        return new PageImpl<>(Collections.singletonList(this.loadUserDtoResponse()));
     }
 
 

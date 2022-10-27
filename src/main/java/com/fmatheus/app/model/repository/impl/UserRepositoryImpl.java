@@ -109,7 +109,7 @@ public class UserRepositoryImpl implements UserRepositoryQuery {
      * @return Long
      * @author Fernando Matheus
      */
-    private Long total(RepositoryFilter filter) {
+    public Long total(RepositoryFilter filter) {
         var builder = manager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
         Root<User> root = criteriaQuery.from(User.class);

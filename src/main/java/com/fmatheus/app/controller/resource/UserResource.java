@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +52,8 @@ public class UserResource {
     })
     @GetMapping
     public ResponseEntity<Page<UserDtoResponse>> list(Pageable pageable, RepositoryFilter filter) {
-        return rule.findAll(pageable, filter);
+        var result = rule.findAll(pageable, filter);
+        return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
@@ -72,7 +74,7 @@ public class UserResource {
     })
     @GetMapping(ResourceConstant.ID)
     public ResponseEntity<UserDtoResponse> findById(@PathVariable int id) {
-        return rule.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(rule.findById(id));
     }
 
 

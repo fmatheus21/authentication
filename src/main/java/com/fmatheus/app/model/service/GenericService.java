@@ -9,7 +9,7 @@ public interface GenericService<T, ID> {
 
     Optional<T> findById(ID id);
 
-    <S extends T> S save(S s);
+    T save(T t);
 
-    void delete(T t);
+    void deleteById(Integer id);
 }
