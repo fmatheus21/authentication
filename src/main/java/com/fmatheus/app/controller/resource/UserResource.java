@@ -5,12 +5,12 @@ import com.fmatheus.app.controller.constant.OperationConstant;
 import com.fmatheus.app.controller.constant.ResourceConstant;
 import com.fmatheus.app.controller.dto.request.UserDtoRequest;
 import com.fmatheus.app.controller.dto.response.UserDtoResponse;
-import com.fmatheus.app.controller.dto.response.swagger.BadRequest;
-import com.fmatheus.app.controller.dto.response.swagger.Forbidden;
-import com.fmatheus.app.controller.dto.response.swagger.ServerError;
-import com.fmatheus.app.controller.dto.response.swagger.Unauthorized;
-import com.fmatheus.app.controller.exception.handler.response.MessageResponse;
+import com.fmatheus.app.exception.swagger.BadRequest;
+import com.fmatheus.app.exception.swagger.Forbidden;
+import com.fmatheus.app.exception.swagger.ServerError;
 import com.fmatheus.app.controller.rule.UserRule;
+import com.fmatheus.app.exception.handler.response.MessageResponse;
+import com.fmatheus.app.exception.swagger.Unauthorized;
 import com.fmatheus.app.model.repository.filter.RepositoryFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -55,7 +55,6 @@ public class UserResource {
         var result = rule.findAll(pageable, filter);
         return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 
 
     @Operation(summary = OperationConstant.GET, description = OperationConstant.DESCRIPTION_GET,

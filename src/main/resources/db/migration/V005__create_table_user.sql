@@ -11,5 +11,5 @@ CREATE TABLE user (
   CONSTRAINT fk_person FOREIGN KEY (id_person) REFERENCES person (id) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO user (id, id_person, username, password, active) VALUES (1, 1, 'FMATHEUS', '$2a$10$LvtCtBtxJyrviMbU.C/Re.nfj3xRBbRVdbzNcgj8pjURJAN9XlIWC', 1);
+INSERT INTO user (id, id_person, username, password, active) VALUES (1, 1, '11573494304', '$2a$10$LvtCtBtxJyrviMbU.C/Re.nfj3xRBbRVdbzNcgj8pjURJAN9XlIWC', 1);
 

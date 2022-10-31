@@ -1,8 +1,8 @@
 package com.fmatheus.app.controller.security;
 
-import com.fmatheus.app.controller.rule.MessageResponseRule;
 import com.fmatheus.app.model.entity.User;
 import com.fmatheus.app.model.repository.UserRepository;
+import com.fmatheus.app.rule.MessageResponseRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class AppUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         logger.info("Username: {}", username);
-        var user = this.userRepository.findByUsername(removeSpecialCharacters(username)).orElseThrow(this.messageResponseRule::usernameNotFoundException);
+        var user = this.userRepository.findByUsername(removeSpecialCharacters(username)).orElseThrow(() -> new UsernameNotFoundException("Usuário ou senha incorretos."));
 
         if (!user.isActive()) {
             logger.error("Usuario inativo: {}", username);
