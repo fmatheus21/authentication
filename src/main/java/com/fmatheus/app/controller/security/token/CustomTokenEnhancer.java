@@ -2,7 +2,7 @@ package com.fmatheus.app.controller.security.token;
 
 import com.fmatheus.app.controller.constant.PropertiesConstant;
 import com.fmatheus.app.controller.security.UserSecurity;
-import com.fmatheus.app.controller.util.AppUtil;
+import com.fmatheus.app.util.AppUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;

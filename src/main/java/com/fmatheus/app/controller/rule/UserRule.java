@@ -4,7 +4,7 @@ import com.fmatheus.app.controller.converter.UserConverter;
 import com.fmatheus.app.controller.dto.request.UserDtoRequest;
 import com.fmatheus.app.controller.dto.response.UserDtoResponse;
 import com.fmatheus.app.controller.event.ResourceEvent;
-import com.fmatheus.app.controller.util.AppUtil;
+import com.fmatheus.app.util.AppUtil;
 import com.fmatheus.app.exception.handler.response.MessageResponse;
 import com.fmatheus.app.model.repository.filter.RepositoryFilter;
 import com.fmatheus.app.model.service.ContactService;

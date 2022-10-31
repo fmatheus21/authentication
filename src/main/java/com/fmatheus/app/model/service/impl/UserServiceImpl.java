@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static com.fmatheus.app.controller.util.AppUtil.removeSpecialCharacters;
+import static com.fmatheus.app.util.AppUtil.removeSpecialCharacters;
 import static java.util.Objects.nonNull;
 
 @Service

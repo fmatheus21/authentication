@@ -4,7 +4,7 @@ import com.fmatheus.app.controller.converter.PersonConverter;
 import com.fmatheus.app.controller.dto.request.PersonDtoRequest;
 import com.fmatheus.app.controller.dto.response.PersonDtoResponse;
 import com.fmatheus.app.controller.enumerable.PersonTypeEnum;
-import com.fmatheus.app.controller.util.AppUtil;
+import com.fmatheus.app.util.AppUtil;
 import com.fmatheus.app.model.entity.Person;
 import com.fmatheus.app.model.entity.PersonType;
 import org.modelmapper.ModelMapper;

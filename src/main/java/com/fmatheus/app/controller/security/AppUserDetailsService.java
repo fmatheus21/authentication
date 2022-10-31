@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.fmatheus.app.controller.util.AppUtil.removeSpecialCharacters;
+import static com.fmatheus.app.util.AppUtil.removeSpecialCharacters;
 
 
 @Service

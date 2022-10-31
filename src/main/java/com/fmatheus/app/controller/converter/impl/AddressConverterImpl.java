@@ -4,7 +4,7 @@ import com.fmatheus.app.controller.constant.FormatConstant;
 import com.fmatheus.app.controller.converter.AddressConverter;
 import com.fmatheus.app.controller.dto.request.AddressDtoRequest;
 import com.fmatheus.app.controller.dto.response.AddressDtoResponse;
-import com.fmatheus.app.controller.util.AppUtil;
+import com.fmatheus.app.util.AppUtil;
 import com.fmatheus.app.model.entity.Address;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

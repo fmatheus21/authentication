@@ -9,7 +9,7 @@ import com.fmatheus.app.controller.dto.response.AddressDtoResponse;
 import com.fmatheus.app.controller.dto.response.ContactDtoResponse;
 import com.fmatheus.app.controller.dto.response.PersonDtoResponse;
 import com.fmatheus.app.controller.dto.response.UserDtoResponse;
-import com.fmatheus.app.controller.util.AppUtil;
+import com.fmatheus.app.util.AppUtil;
 import com.fmatheus.app.enumerable.MessagesEnum;
 import com.fmatheus.app.exception.BadRequestException;
 import com.fmatheus.app.exception.handler.response.MessageResponse;

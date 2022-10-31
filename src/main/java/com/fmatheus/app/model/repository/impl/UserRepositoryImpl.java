@@ -1,7 +1,7 @@
 package com.fmatheus.app.model.repository.impl;
 
 import com.fmatheus.app.controller.enumerable.EntityEnum;
-import com.fmatheus.app.controller.util.AppUtil;
+import com.fmatheus.app.util.AppUtil;
 import com.fmatheus.app.model.entity.Contact;
 import com.fmatheus.app.model.entity.Person;
 import com.fmatheus.app.model.entity.User;
