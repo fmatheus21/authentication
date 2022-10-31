@@ -130,8 +130,6 @@
             <artifactId>custom-exception</artifactId>
             <version>1.0.0</version>
             <type>jar</type>
-            <!--<scope>import</scope>
-            <systemPath>${basedir}/src/main/resources/lib/custom-exception-1.0.0.jar</systemPath>-->
         </dependency>
 
         <dependency>

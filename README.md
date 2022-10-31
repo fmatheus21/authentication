@@ -42,6 +42,11 @@
 > Para testar os endpoints no  <code>***Postman***</code>, abra-o  e importe o arquivo  <code>***postman_collection.json***</code> que se encontra na raiz do projeto.
 > A API está documentada com o <code>***Open API***</code>, é só entrar no seu navegador e digitar [http://localhost:8083/authentication/api/v1/swagger-ui.html](http://localhost:8083/paginator/api/v1/swagger-ui.html).
 
+> Será necessário as seguintes dependências:
+> 
+> [custom-exception-1.0.0.jar](https://github.com/fmatheus21/mvn-repository/blob/main/custom-exception-1.0.0.jar)
+> 
+> [custom-validation-1.0.0.jar](https://github.com/fmatheus21/mvn-repository/blob/main/custom-validation-1.0.0.jar)
 
 </br></br>
 
