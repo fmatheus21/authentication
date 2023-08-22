@@ -5,12 +5,13 @@ import com.fmatheus.app.controller.constant.OperationConstant;
 import com.fmatheus.app.controller.constant.ResourceConstant;
 import com.fmatheus.app.controller.dto.request.UserDtoRequest;
 import com.fmatheus.app.controller.dto.response.UserDtoResponse;
-import com.fmatheus.app.exception.swagger.BadRequest;
-import com.fmatheus.app.exception.swagger.Forbidden;
-import com.fmatheus.app.exception.swagger.ServerError;
+import com.fmatheus.app.controller.exception.handler.MessageResponseHandler;
+import com.fmatheus.app.controller.exception.message.MessageResponse;
+import com.fmatheus.app.controller.exception.swagger.BadRequest;
+import com.fmatheus.app.controller.exception.swagger.Forbidden;
+import com.fmatheus.app.controller.exception.swagger.ServerError;
+import com.fmatheus.app.controller.exception.swagger.Unauthorized;
 import com.fmatheus.app.controller.rule.UserRule;
-import com.fmatheus.app.exception.handler.response.MessageResponse;
-import com.fmatheus.app.exception.swagger.Unauthorized;
 import com.fmatheus.app.model.repository.filter.RepositoryFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -61,7 +62,7 @@ public class UserResource {
             tags = {OperationConstant.USER_TAG})
     @ApiResponses(value = {
             @ApiResponse(responseCode = HttpStatusConstant.OK_NUMBER, description = HttpStatusConstant.OK,
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponseHandler.class))),
             @ApiResponse(responseCode = HttpStatusConstant.BAD_REQUEST_NUMBER, description = HttpStatusConstant.BAD_REQUEST,
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BadRequest.class))),
             @ApiResponse(responseCode = HttpStatusConstant.UNAUTHORIZED_NUMBER, description = HttpStatusConstant.UNAUTHORIZED,
@@ -92,7 +93,7 @@ public class UserResource {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerError.class)))
     })
     @PostMapping
-    public ResponseEntity<MessageResponse> create(@RequestBody @Valid UserDtoRequest request, HttpServletResponse response) {
+    public ResponseEntity<MessageResponseHandler> create(@RequestBody @Valid UserDtoRequest request, HttpServletResponse response) {
         return rule.create(request, response);
     }
 

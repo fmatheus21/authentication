@@ -9,10 +9,11 @@ import com.fmatheus.app.controller.dto.response.AddressDtoResponse;
 import com.fmatheus.app.controller.dto.response.ContactDtoResponse;
 import com.fmatheus.app.controller.dto.response.PersonDtoResponse;
 import com.fmatheus.app.controller.dto.response.UserDtoResponse;
-import com.fmatheus.app.util.AppUtil;
-import com.fmatheus.app.enumerable.MessagesEnum;
-import com.fmatheus.app.exception.BadRequestException;
-import com.fmatheus.app.exception.handler.response.MessageResponse;
+import com.fmatheus.app.controller.enumerable.MessagesEnum;
+import com.fmatheus.app.controller.exception.BadRequestException;
+import com.fmatheus.app.controller.exception.handler.MessageResponseHandler;
+import com.fmatheus.app.controller.exception.message.MessageResponse;
+import com.fmatheus.app.controller.util.CharacterUtil;
 import com.fmatheus.app.model.entity.*;
 import com.fmatheus.app.model.repository.ContactRepository;
 import com.fmatheus.app.model.repository.PersonRepository;
@@ -20,7 +21,6 @@ import com.fmatheus.app.model.repository.UserRepository;
 import com.fmatheus.app.model.repository.filter.RepositoryFilter;
 import com.fmatheus.app.model.service.ContactService;
 import com.fmatheus.app.model.service.UserService;
-import com.fmatheus.app.rule.MessageResponseRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,7 +58,7 @@ class UserRuleTest {
     private ApplicationEventPublisher publisher;
 
     @Mock
-    private MessageResponseRule messageResponseRule;
+    private MessageResponse messageResponse;
 
     @Mock
     private UserService userService;
@@ -129,7 +129,7 @@ class UserRuleTest {
         when(userService.findById(user.getId())).thenReturn(userOptional);
 
         var error = new BadRequestException(MessagesEnum.ERROR_NOT_FOUND);
-        when(messageResponseRule.errorNotFound()).thenReturn(error);
+        when(messageResponse.errorNotFound()).thenReturn(error);
 
         var converterToResponse = this.userDtoResponse();
         when(userConverter.converterToResponse(user)).thenReturn(converterToResponse);
@@ -151,16 +151,16 @@ class UserRuleTest {
         var username = request.getUsername();
 
         var usernameValue = user.getUsername().equalsIgnoreCase(username);
-        when(userService.checkUsernameExist(AppUtil.removeAllSpaces(user.getUsername()))).thenReturn(usernameValue);
-        when(messageResponseRule.badRequestErrorUsernameExist()).thenReturn(new BadRequestException(MessagesEnum.ERROR_USERNAME_EXIST));
+        when(userService.checkUsernameExist(CharacterUtil.removeAllSpaces(user.getUsername()))).thenReturn(usernameValue);
+        when(messageResponse.errorUsernameExist()).thenReturn(new BadRequestException(MessagesEnum.ERROR_USERNAME_EXIST));
 
         var findByPhoneValue = user.getIdPerson().getContact().getPhone().equalsIgnoreCase(phone);
-        when(contactService.checkPhoneExist(AppUtil.removeSpecialCharacters(phone))).thenReturn(findByPhoneValue);
-        when(messageResponseRule.badRequestErrorPhoneExist()).thenReturn(new BadRequestException(MessagesEnum.ERROR_PHONE_EXIST));
+        when(contactService.checkPhoneExist(CharacterUtil.removeSpecialCharacters(phone))).thenReturn(findByPhoneValue);
+        when(messageResponse.errorPhoneExist()).thenReturn(new BadRequestException(MessagesEnum.ERROR_PHONE_EXIST));
 
         var findByEmailValue = user.getIdPerson().getContact().getEmail().equalsIgnoreCase(email);
         when(contactService.checkEmailExist(email)).thenReturn(findByEmailValue);
-        when(messageResponseRule.badRequestErrorEmailExist()).thenReturn(new BadRequestException(MessagesEnum.ERROR_EMAIL_EXIST));
+        when(messageResponse.errorEmailExist()).thenReturn(new BadRequestException(MessagesEnum.ERROR_EMAIL_EXIST));
 
         when(userConverter.converterToSave(request)).thenReturn(user.getIdPerson());
 
@@ -168,11 +168,11 @@ class UserRuleTest {
 
         MessagesEnum messagesEnum = MessagesEnum.SUCCESS_CREATE;
         String message = messageSource.getMessage(messagesEnum.getMessage(), null, LocaleContextHolder.getLocale());
-        when(messageResponseRule.messageSuccessCreate()).thenReturn(new MessageResponse(messagesEnum, messagesEnum.getHttpSttus().getReasonPhrase(), message));
+        when(messageResponse.successCreate()).thenReturn(new MessageResponseHandler(messagesEnum, messagesEnum.getHttpSttus().getReasonPhrase(), message));
 
-        ResponseEntity<MessageResponse> actual = userRule.create(request, httpServletResponse);
+        ResponseEntity<MessageResponseHandler> actual = userRule.create(request, httpServletResponse);
 
-        ResponseEntity<MessageResponse> expected = ResponseEntity.status(HttpStatus.CREATED).body(this.messageResponseRule.messageSuccessCreate());
+        ResponseEntity<MessageResponseHandler> expected = ResponseEntity.status(HttpStatus.CREATED).body(this.messageResponse.successCreate());
 
         assertEquals(expected, actual);
 

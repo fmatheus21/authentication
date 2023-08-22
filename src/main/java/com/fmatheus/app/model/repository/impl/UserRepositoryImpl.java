@@ -1,7 +1,7 @@
 package com.fmatheus.app.model.repository.impl;
 
 import com.fmatheus.app.controller.enumerable.EntityEnum;
-import com.fmatheus.app.util.AppUtil;
+import com.fmatheus.app.controller.util.CharacterUtil;
 import com.fmatheus.app.model.entity.Contact;
 import com.fmatheus.app.model.entity.Person;
 import com.fmatheus.app.model.entity.User;
@@ -67,7 +67,7 @@ public class UserRepositoryImpl implements UserRepositoryQuery {
 
         if (Objects.nonNull(filter.getDocument())) {
             predicates.add(builder.like(builder.lower(joinPerson.get(EntityEnum.DOCUMENT.getValue())),
-                    "%" + AppUtil.removeSpecialCharacters(filter.getDocument()) + "%"));
+                    "%" + CharacterUtil.removeSpecialCharacters(filter.getDocument()) + "%"));
         }
 
         if (Objects.nonNull(filter.getEmail())) {

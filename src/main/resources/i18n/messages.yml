@@ -13,6 +13,7 @@ message:
     not-readable: Existem campos não reconhecidos.
     unauthorized: Não autorizado.
     record-exist: O registro já existe.
+    data-integrity-violation: O regitro não pôde ser excluído devido a uma Violação de Integridade. Este registro está protegido pelo sistema.
   success:
     delete: Registro excluído com sucesso.
     update: Registro atualizado com sucesso.

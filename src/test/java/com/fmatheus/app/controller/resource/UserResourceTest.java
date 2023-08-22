@@ -12,10 +12,10 @@ import com.fmatheus.app.controller.dto.response.AddressDtoResponse;
 import com.fmatheus.app.controller.dto.response.ContactDtoResponse;
 import com.fmatheus.app.controller.dto.response.PersonDtoResponse;
 import com.fmatheus.app.controller.dto.response.UserDtoResponse;
+import com.fmatheus.app.controller.exception.message.MessageResponse;
 import com.fmatheus.app.controller.rule.UserRule;
 import com.fmatheus.app.model.repository.filter.RepositoryFilter;
 import com.fmatheus.app.model.service.UserService;
-import com.fmatheus.app.rule.MessageResponseRule;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,7 +67,7 @@ class UserResourceTest {
     private UserRule userRule;
 
     @MockBean
-    private MessageResponseRule messageResponseRule;
+    private MessageResponse messageResponse;
 
     @MockBean
     private UserConverter userConverter;

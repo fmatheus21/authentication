@@ -1,8 +1,8 @@
 package com.fmatheus.app.controller.security;
 
+import com.fmatheus.app.controller.exception.message.MessageResponse;
 import com.fmatheus.app.model.entity.User;
 import com.fmatheus.app.model.repository.UserRepository;
-import com.fmatheus.app.rule.MessageResponseRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.fmatheus.app.util.AppUtil.removeSpecialCharacters;
+import static com.fmatheus.app.controller.util.CharacterUtil.removeSpecialCharacters;
 
 
 @Service
@@ -26,7 +26,7 @@ public class AppUserDetailsService implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(AppUserDetailsService.class);
 
     @Autowired
-    private MessageResponseRule messageResponseRule;
+    private MessageResponse messageResponse;
 
     @Autowired
     private UserRepository userRepository;
@@ -40,7 +40,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
         if (!user.isActive()) {
             logger.error("Usuario inativo: {}", username);
-            throw this.messageResponseRule.userInactiveException();
+            throw this.messageResponse.errorUserInactive();
         }
 
         logger.error("Usuario autorizado: {}", username);
